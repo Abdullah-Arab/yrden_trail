@@ -160,24 +160,34 @@ class _MainMapState extends State<MainMap> {
                     child: const Text("Get Location")))
           ],
         ),
-        body: Stack(
+        body: FlutterMap(
+          mapController: mapController,
+          options: mapOptions,
           children: [
-            FlutterMap(
-              mapController: mapController,
-              options: mapOptions,
-              children: [
-                ..._buildAttributions(),
-                MarkerLayer(
-                    markers:
-                        markers), // Add MarkerLayerOptions to the layers property
-              ],
-            ),
-            CustomPaint(
-              painter: FogOfWarPainter(revealedAreas),
-              child: Container(),
-            ),
+            ..._buildAttributions(),
+            MarkerLayer(
+                markers:
+                    markers), // Add MarkerLayerOptions to the layers property
           ],
         ),
+        // body: Stack(
+        //   children: [
+        //     FlutterMap(
+        //       mapController: mapController,
+        //       options: mapOptions,
+        //       children: [
+        //         ..._buildAttributions(),
+        //         MarkerLayer(
+        //             markers:
+        //                 markers), // Add MarkerLayerOptions to the layers property
+        //       ],
+        //     ),
+        //     CustomPaint(
+        //       painter: FogOfWarPainter(revealedAreas),
+        //       child: Container(),
+        //     ),
+        //   ],
+        // ),
       ),
     );
   }
