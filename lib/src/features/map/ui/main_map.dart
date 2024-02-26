@@ -4,6 +4,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:yrden_trail/src/features/map/ui/fog_of_war.dart';
 import 'package:yrden_trail/src/utilites/consts.dart';
 
 class MainMap extends StatefulWidget {
@@ -38,6 +39,8 @@ class _MainMapState extends State<MainMap> {
       ),
     ];
   }
+
+  List<LatLng> revealedAreas = [];
 
   /// Determine the current position of the device.
   ///
@@ -105,6 +108,8 @@ class _MainMapState extends State<MainMap> {
           ),
         ),
       );
+
+      revealedAreas.add(LatLng(position.latitude, position.longitude));
     });
 
     return position;
@@ -155,14 +160,22 @@ class _MainMapState extends State<MainMap> {
                     child: const Text("Get Location")))
           ],
         ),
-        body: FlutterMap(
-          mapController: mapController,
-          options: mapOptions,
+        body: Stack(
           children: [
-            ..._buildAttributions(),
-            MarkerLayer(
-                markers:
-                    markers), // Add MarkerLayerOptions to the layers property
+            FlutterMap(
+              mapController: mapController,
+              options: mapOptions,
+              children: [
+                ..._buildAttributions(),
+                MarkerLayer(
+                    markers:
+                        markers), // Add MarkerLayerOptions to the layers property
+              ],
+            ),
+            CustomPaint(
+              painter: FogOfWarPainter(revealedAreas),
+              child: Container(),
+            ),
           ],
         ),
       ),
