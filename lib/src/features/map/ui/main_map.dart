@@ -19,6 +19,7 @@ class _MainMapState extends State<MainMap> {
     initialCenter: LatLng(32.8917297, 13.1756972),
     initialZoom: 9.2,
   );
+  List<Marker> markers = []; // Declare a Marker list
 
   List<Widget> _buildAttributions() {
     return [
@@ -76,8 +77,37 @@ class _MainMapState extends State<MainMap> {
 
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
-    return await Geolocator.getCurrentPosition(
+    Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
+
+    // Create a new Marker with the current position and add it to the Marker list
+    setState(() {
+      markers.add(
+        Marker(
+          width: 30.0,
+          height: 30.0,
+          point: LatLng(position.latitude, position.longitude),
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.white,
+                width: 4,
+              ),
+              color: Colors.blue.shade700,
+              shape: BoxShape.circle,
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black,
+                  blurRadius: 20,
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    });
+
+    return position;
   }
 
   @override
@@ -115,14 +145,25 @@ class _MainMapState extends State<MainMap> {
           children: [
             SizedBox(
                 width: double.infinity,
-                child:
-                    FilledButton(onPressed: () {}, child: const Text("Press")))
+                child: FilledButton(
+                    onPressed: () {
+                      _determinePosition().then((value) {
+                        mapController.move(
+                            LatLng(value.latitude, value.longitude), 15);
+                      });
+                    },
+                    child: const Text("Get Location")))
           ],
         ),
         body: FlutterMap(
           mapController: mapController,
           options: mapOptions,
-          children: _buildAttributions(),
+          children: [
+            ..._buildAttributions(),
+            MarkerLayer(
+                markers:
+                    markers), // Add MarkerLayerOptions to the layers property
+          ],
         ),
       ),
     );
