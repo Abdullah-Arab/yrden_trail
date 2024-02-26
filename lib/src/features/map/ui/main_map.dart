@@ -8,9 +8,9 @@ class MainMap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     return Scaffold(
+    return Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          // backgroundColor: Theme.of(context).colorScheme.primary,
           title: Text(
             'YrdenTrail',
             style: Theme.of(context).textTheme.headlineMedium,
@@ -18,7 +18,7 @@ class MainMap extends StatelessWidget {
         ),
         body: FlutterMap(
           options: const MapOptions(
-            initialCenter: LatLng(32.8917297,   13.1756972),
+            initialCenter: LatLng(32.8917297, 13.1756972),
             initialZoom: 9.2,
           ),
           children: [
@@ -41,6 +41,5 @@ class MainMap extends StatelessWidget {
         // in the middle of the parent.
 
         );
-  
   }
 }

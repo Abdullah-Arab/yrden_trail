@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:yrden_trail/src/features/map/ui/main_map.dart';
 
@@ -11,7 +10,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'YrdenTrail',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.greenAccent),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0x006a6f4c)),
         useMaterial3: true,
       ),
       home: const MainMap(),
